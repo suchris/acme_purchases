@@ -38,7 +38,7 @@ Purchase.belongsTo(Place);
 
 const syncAndSeed = async () => {
   try {
-    await db.sync();
+    await db.sync({ force: true });
     const [larry, moe, curly] = await Promise.all(
       ["larry", "moe", "curly"].map((name) => Person.create({ name }))
     );
