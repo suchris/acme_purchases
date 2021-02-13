@@ -1,4 +1,9 @@
 form {
   display: flex;
   flex-direction: column;
+  width: 200px;
+}
+
+form > * {
+  margin: 5px;
 }

@@ -10,6 +10,7 @@ const app = express();
 
 app.use(require("method-override")("_method"));
 app.use(express.urlencoded({ extended: false }));
+app.use(express.static(__dirname));
 
 app.get("/", async (req, res, next) => {
   try {
