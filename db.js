@@ -40,10 +40,10 @@ const syncAndSeed = async () => {
   try {
     await db.sync();
     const [larry, moe, curly] = await Promise.all(
-      ["larry", "moe", "curly"].map((person) => Person.create({ person }))
+      ["larry", "moe", "curly"].map((name) => Person.create({ name }))
     );
     const [LA, NYC, Paris, London] = await Promise.all(
-      ["LA", "NYC", "Paris", "London"].map((place) => Place.create({ place }))
+      ["LA", "NYC", "Paris", "London"].map((name) => Place.create({ name }))
     );
     const book = await Purchase.create({
       name: "book",
