@@ -12,6 +12,25 @@ app.use(require("method-override")("_method"));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(__dirname));
 
+app.delete("/purchases/:id", async (req, res, next) => {
+    try {
+        const purchase = await Purchase.findByPk(req.params.id);
+        await purchase.destroy();
+        res.redirect("/");
+    } catch (err) {
+        next(err);
+    }
+});
+
+app.post("/", async (req, res, next) => {
+    try {
+        const purchase = await Purchase.create(req.body);
+        res.redirect("/");
+    } catch (err) {
+        next(err);
+    }
+});
+
 app.get("/", async (req, res, next) => {
   try {
     const [people, places, things, purchases] = await Promise.all([
@@ -31,7 +50,7 @@ app.get("/", async (req, res, next) => {
         <body>
           <h1>Acme Purchases Abroad</h1>
           <h3>Add a purchase!</h3>
-          <form method="POST">
+          <form method="POST" id='purchase-form'>
             <select name="personId" action="/people/${people.id}">
               <option>Person</option>
                 ${people.map(
@@ -56,8 +75,8 @@ app.get("/", async (req, res, next) => {
                 )}
               </option>
             </select>
-            <input type="number" id="quantity" name="quantity" placeholder=1>
-            <input type="date" id="date" name="date" placeholder="2020-1-1">
+            <input type="number" id="quantity" name="quantity" placeholder=0>
+            <input type="date" id="date" name="date">
             <button>Save Purchase</button>
           </form>
           <div>
@@ -65,8 +84,10 @@ app.get("/", async (req, res, next) => {
             <ul>
               ${purchases.map(
                 (purchase) => html` <li>
-                  ${purchase.person.name} purchased ${purchase.quantity}
-                  ${purchase.thing.name} on ${purchase.date}
+                  ${purchase.person.name} purchased ${purchase.quantity} ${purchase.thing.name} at ${purchase.place.name} on ${purchase.date.toDateString()}
+                    <form method="POST" action="/purchases/${purchase.id}?_method=DELETE">
+                      <button>x</button>
+                    </form>
                 </li>`
               )}
             </ul>
@@ -74,7 +95,6 @@ app.get("/", async (req, res, next) => {
         </body>
       </html>
     `);
-    // res.send({ people, places, things, purchases });
   } catch (err) {
     next(err);
   }

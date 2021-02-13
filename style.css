@@ -1,9 +1,14 @@
-form {
+#purchase-form {
   display: flex;
   flex-direction: column;
   width: 200px;
 }
 
-form > * {
+#purchase-form > * {
+  margin: 5px;
+}
+
+li {
+  display: flex;
   margin: 5px;
 }
