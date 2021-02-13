@@ -25,6 +25,7 @@ app.get("/", async (req, res, next) => {
       <html>
         <head>
           <title>Purchases Abroad</title>
+          <link rel="stylesheet" href="./style.css"/>
         </head>
         <body>
           <h1>Acme Purchases Abroad</h1>
@@ -38,7 +39,24 @@ app.get("/", async (req, res, next) => {
                 )}
               </option>
             </select>
-
+            <select name="placeId" action="/places/${places.id}">
+              <option>Place</option>
+                ${places.map(
+                  (place) =>
+                    html` <option value="${place.id}">${place.name}</option> `
+                )}
+              </option>
+            </select>
+            <select name="thingId" action="/things/${things.id}">
+              <option>Thing</option>
+                ${things.map(
+                  (thing) =>
+                    html` <option value="${thing.id}">${thing.name}</option> `
+                )}
+              </option>
+            </select>
+            <input type="number" id="quantity" name="quantity" placeholder=1>
+            <input type="date" id="date" name="date" placeholder="2020-1-1">
             <button>Save Purchase</button>
           </form>
           <div>
